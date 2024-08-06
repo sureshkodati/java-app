@@ -1,0 +1,40 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  japp-build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Hello world action step
+      id: hello
+      uses: actions/hello-world-docker-action@v2
+      with:
+        who-to-greet: 'Mona the Octocat'
+      # Use the output from the `hello` step
+    - name: Get the output time
+      run: echo "The time was ${{ steps.hello.outputs.time }}"
+
+    - name: Build
+      run: |
+        mvn -B -DskipTests clean package
+        # gsutil cp gs://backend-dev-project-426703/tfvars/* .
+
+    - name: Test
+      run: |
+        mvn test
+        #junit 'target/surefire-reports/*.xml'
+
+    - name: Deliver
+      run: |
+        pwd
+        ls
+        ./deliver.sh
