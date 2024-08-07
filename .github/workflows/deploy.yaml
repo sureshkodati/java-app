@@ -1,4 +1,4 @@
-name: Makefile CI
+name: Java App Build CI
 
 on:
   push:
@@ -10,7 +10,11 @@ jobs:
   japp-build:
 
     runs-on: ubuntu-latest
-    
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
     - uses: actions/checkout@v4
 
@@ -34,7 +38,7 @@ jobs:
     - name: Build
       run: |
         mvn -B -DskipTests clean package
-        # gsutil cp gs://backend-dev-project-426703/tfvars/* .
+        
 
     - name: Test
       run: |
@@ -45,4 +49,5 @@ jobs:
       run: |
         pwd
         ls
-        ./deliver.sh.
+        ./deliver.sh
+        gsutil cp target/my-app-1.0-SNAPSHOT.jar gs://backend-dev-project-426703/javaapp/my-app-1.0-SNAPSHOT.jar
