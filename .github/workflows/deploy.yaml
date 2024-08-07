@@ -50,4 +50,3 @@ jobs:
         pwd
         ls
         ./deliver.sh
-        gsutil cp target/my-app-1.0-SNAPSHOT.jar gs://backend-dev-project-426703/javaapp/my-app-1.0-SNAPSHOT.jar
